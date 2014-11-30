@@ -1,0 +1,162 @@
+=pod
+
+=head1 NAME
+
+edg-mkgridmap.conf - edg-mkgridmap configuration file
+
+=head1 DESCRIPTION
+
+F<edg-mkgridmap.conf> file contains configuration informations for
+B<edg-mkgridmap>.
+
+The default location is F</etc/edg-mkgridmap.conf>.
+
+The F<edg-mkgridmap.conf> file is a free-form ASCII text file. It is
+parsed by the descent parser built into B<edg-mkgridmap>. The file may
+contain extra tabs and white spaces for formatting purposes. Keywords in
+the file are case-insensitive. Comments may be placed anywhere within the
+file (except within quotes). Comments begin with the # character and end
+at the end of the line.
+
+The file essentially consists of a list of directives composed by a
+keyword and one or more arguments. Optional arguments are put in square
+brackets.
+
+=over 4
+
+=item * B<group> I<URI> I<[lcluser]>
+
+=item * B<default_lcluser> I<default_lcluser>
+
+=item * B<auth> I<URI>
+
+=item * B<allow>|B<deny> I<pattern_to_match>
+
+=item * B<gmf_local> I<grid-mapfile-local>
+
+=back
+
+=head1 EXAMPLE
+
+  #### GROUP: group URI [lcluser]
+  group ldaps://grid-vo.infn.it/ou=testbed1,o=infn,c=it .infngrid
+  group ldaps://grid-vo.infn.it/ou=testbed2,o=infn,c=it
+  group ldaps://grid-vo.infn.it/ou=testbed3,o=infn,c=it AUTO
+  group https://grid-vo.infn.it/infngrid/testbed1 .infngrid
+  group https://grid-vo.infn.it/infngrid/testbed2
+  group https://grid-vo.infn.it/infngrid/testbed3 AUTO
+  group vomss://voms.hellasgrid.gr:8443/voms/dteam?/dteam/Role=lcgadmin dteamsgm
+  group vomss://voms.hellasgrid.gr:8443/voms/dteam?/dteam .dteam
+
+  #### DEFAULT_LCLUSER: default_lcluser lcluser
+  default_lcluser .infngrid
+
+  #### AUTH: auth URI
+  auth ldaps://grid-auth.infn.it/ou=People,o=infn,c=it
+
+  #### ALLOW and DENY: deny|allow pattern_to_match
+  deny *L=Parma*
+  allow *INFN*
+
+  #### GMF_LOCAL: gmf_local grid-mapfile-local
+  gmf_local /etc/grid-mapfile-local1
+  gmf_local /etc/grid-mapfile-local2
+  gmf_local /etc/grid-mapfile-local3
+
+=head1 REFERENCE: GROUP
+
+The I<group> B<directive>
+
+B<group> I<URI> I<[lcluser]>
+
+A B<group> directive defines a group of people which are members of a VO.
+I<lcluser>, if specified, is the local user name associated to each member
+of the group. If I<lcluser> is not specified, the default local user is
+implicitly used. If someone belongs to more than one group, the first
+match is used.
+
+The I<URI> may be of these types:
+
+ldap[s]://<host>[:<port>]/<group>[??<scope>?<filter>]
+
+http[s]://<host>[:<port>]/<group>
+
+voms[s]://<host>[:<port>]/edg-voms-admin/<vo>[?<group>[/Role=<role>]]
+
+For ldap URI the default scope is base and the default filter is
+(objectClass=*).
+
+For voms/vomss URI the default port is the same of http/https URI.
+
+Specify I<AUTO> as I<lcluser> or I<default_lcluser> for automatic
+generation of local usernames. In this case the executable
+F<local-subject2user> is used. I<local-subject2user> is called with the user
+certificate subject as argument and writes to the standard output the
+local username associated with the user certificate subject. This allows
+local sites to customize the output of B<edg-mkgridmap>.
+
+Specify I<.> or I<.[PREFIX]> (eg I<.cms>) as I<lcluser> or
+I<default_lcluser> to enable dynamic allocation of local usernames (Andrew
+McNab's gridmapdir patch).
+
+=head1 REFERENCE: DEFAULT_LCLUSER
+
+The I<default_lcluser> B<directive>
+
+B<default_lcluser> I<default_lcluser>
+
+The B<default_lcluser> directive defines the default local user.
+
+=head1 REFERENCE: AUTH
+
+The I<auth> B<directive>
+
+B<auth> I<URI>
+
+The B<auth> directive specifies a group of people which are authorized to
+access to the local resources. If the certificate subject of a member of a
+ldap/ldaps group is not present in this authorized group, it will not be
+inserted in the grid-mapfile. If B<auth> is omitted, this feature is
+disabled.
+
+The I<URI> may be of these types:
+
+ldap[s]://<host>[:<port>]/<group>[??<scope>?<filter>]
+
+The default scope is one and the default filter is (description=subject=*).
+
+=head1 REFERENCE: ALLOW and DENY
+
+The I<allow>|I<deny> B<directive>
+
+B<allow>|B<deny> I<pattern_to_match>
+
+B<allow> and B<deny> directives define the access control list. The
+pattern to match may contain wildcards; the test is done on the user
+certificate subject. Parsing stops at the first match. If there is at
+least an allow, there is an implicit B<deny> I<*> at the end, otherwise
+there is an implicit B<allow> I<*>. Parsing is not case sensitive.
+
+=head1 REFERENCE: GMF_LOCAL
+
+The I<gmf_local> B<directive>
+
+B<gmf_local> I<grid-mapfile-local>
+
+The B<gmf_local> directive specifies a local grid-mapfile useful to add
+static entries in the grid-mapfile.
+
+=head1 FILES
+
+F</etc/edg-mkgridmap.conf>
+
+=head1 SEE ALSO
+
+edg-mkgridmap(8)
+
+=head1 AUTHORS
+
+EU DataGrid Authorization Working Group,
+EGEE Middleware Security Group, Maarten Litmaath (CERN/WLCG)
+
+=cut

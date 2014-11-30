@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cfg=/etc/sysconfig/edg-mkgridmap
+
+[ -r $cfg ] && . $cfg
+
+GRIDMAP=${GRIDMAP:-/etc/grid-security/grid-mapfile}
+CERTDIR=${CERTDIR:-/etc/grid-security/certificates}
+X509_USER_CERT=${X509_USER_CERT:-/etc/grid-security/hostcert.pem}
+X509_USER_KEY=${X509_USER_KEY:-/etc/grid-security/hostkey.pem}
+
+export GRIDMAP
+export CERTDIR
+export X509_USER_CERT
+export X509_USER_KEY
+export http_proxy
+export https_proxy
+
+prog=/usr/libexec/edg-mkgridmap/edg-mkgridmap.pl
+
+exec $prog $EDG_MKGRIDMAP_OPTIONS "$@"
+
