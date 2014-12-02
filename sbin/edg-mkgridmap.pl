@@ -744,7 +744,6 @@ sub authSearch::ldap($)
 				port       => $port,
 				timeout    => $timeout,
 				version    => '3',
-				sslversion => 'sslv3',
 				verify     => 'require',
 				ciphers    => 'HIGH:MEDIUM',
 				clientcert => $ENV{HTTPS_CERT_FILE},
@@ -919,7 +918,6 @@ sub memberSearch::ldap($$)
 				port       => $port,
 				timeout    => $timeout,
 				version    => '3',
-				sslversion => 'sslv3',
 				verify     => 'require',
 				ciphers    => 'HIGH:MEDIUM',
 				clientcert => $ENV{HTTPS_CERT_FILE},
@@ -1600,7 +1598,7 @@ sub printVersion()
 
 #=============================================================================#
 
-$version = '4.0.0';
+$version = '4.0.1';
 
 #-----------------------------------------------------------------------------#
 
