@@ -1,11 +1,14 @@
 Name:		edg-mkgridmap
 Version:	4.0.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A tool to build the grid map-file from VO servers
 Group:		Applications/Internet
 License:	ASL 2.0
 Url:		http://svnweb.cern.ch/world/wsvn/curios/edg-mkgridmap
-Source:		%{name}-%{version}.tar.gz
+
+# svn export http://svn.cern.ch/guest/curios/edg-mkgridmap/tags/v4_0_1 edg-mkgridmap-4.0.1
+# tar czf edg-mkgridmap-4.0.1.tar.gz edg-mkgridmap-4.0.1
+Source0:	%{name}-%{version}.tar.gz
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
@@ -20,6 +23,7 @@ Requires:	perl(Crypt::SSLeay)
 Requires:	perl(LWP)
 Requires:	perl(XML::DOM)
 Requires:	perl(Date::Manip)
+Requires:       perl(LWP::Protocol::https)
 
 %description
 edg-mkgridmap is a tool to build the grid map-file from VO servers,
@@ -51,6 +55,9 @@ rm -rf %{buildroot}
 - No longer require SSLv3, allow TLS to be negotiated instead.
 - Relocation of source repository.
 - Cleanup for EPEL builds.
+
+* Fri Nov 21 2014 Alejandro Alvarez Ayllon <aalvarez@cern.ch> - 4.0.0-8
+- Added Requires perl(LWP::Protocol::https)
 
 * Thu May 23 2013 <aalvarez@cern.ch> - 4.0.0-4
 - Added dist to the release number.
