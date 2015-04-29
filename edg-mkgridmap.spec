@@ -1,6 +1,6 @@
 Name:		edg-mkgridmap
 Version:	4.0.2
-Release:	2%{?dist}
+Release:	1%{?dist}
 Summary:	A tool to build the grid map-file from VO servers
 Group:		Applications/Internet
 License:	ASL 2.0
