@@ -680,7 +680,7 @@ sub getSubject::voms($)
 
 	for my $sn (@snList)
 	  {
-	    if ($sn->getNodeTypeName eq "ELEMENT_NODE")
+	    if ($sn->getNodeTypeName eq "ELEMENT_NODE" && $sn->getFirstChild)
 	      {
 		$subject = $sn->getFirstChild->getData;
 		push(@Subject, $subject);
@@ -1598,7 +1598,7 @@ sub printVersion()
 
 #=============================================================================#
 
-$version = '4.0.1';
+$version = '4.0.2';
 
 #-----------------------------------------------------------------------------#
 
