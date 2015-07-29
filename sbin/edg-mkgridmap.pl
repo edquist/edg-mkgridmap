@@ -55,6 +55,7 @@ use LWP::UserAgent;
 use XML::DOM;
 use XML::Parser;
 use Sys::Syslog qw(:DEFAULT setlogsock);
+use IO::Socket::SSL;
 
 #=============================================================================#
 
@@ -333,7 +334,7 @@ sub setEnv::ssl()
 
 	$ENV{HTTPS_CERT_FILE} = $user_proxy;
 	$ENV{HTTPS_KEY_FILE}  = $user_proxy;
-	$ENV{HTTPS_CA_FILE}   = $user_proxy;
+	$ENV{HTTPS_CA_FILE}   = $user_proxy if $IO::Socket::SSL::VERSION < '1.88';
       }
     elsif ($<)
       {
@@ -350,7 +351,7 @@ sub setEnv::ssl()
 	  '/etc/grid-security/hostkey.pem';
       }
 
-    $ENV{HTTPS_CA_DIR} = $ENV{CERTDIR} ||
+    $ENV{HTTPS_CA_DIR} = $ENV{CERTDIR} || $ENV{X509_CERT_DIR} ||
       '/etc/grid-security/certificates';
   }
 
@@ -461,8 +462,13 @@ sub getSubject::http($)
 	  }
       }
 
-    $ua = LWP::UserAgent->new(agent   => "edg-mkgridmap/$version",
-                              timeout => $timeout);
+    $ua = LWP::UserAgent->new(agent    => "edg-mkgridmap/$version",
+                              timeout  => $timeout,
+                              ssl_opts => {
+                                SSL_cert_file => $ENV{HTTPS_CERT_FILE},
+                                SSL_key_file  => $ENV{HTTPS_KEY_FILE}
+                              }
+    );
 
     if ($opt_proxy)
       {
@@ -622,8 +628,13 @@ sub getSubject::voms($)
         $uri->query_form(method => 'getGridmapUsers');
       }
 
-    $ua = LWP::UserAgent->new(agent   => "edg-mkgridmap/$version",
-                              timeout => $timeout);
+    $ua = LWP::UserAgent->new(agent    => "edg-mkgridmap/$version",
+                              timeout  => $timeout,
+                              ssl_opts => {
+                                SSL_cert_file => $ENV{HTTPS_CERT_FILE},
+                                SSL_key_file  => $ENV{HTTPS_KEY_FILE}
+                              }
+    );
 
     if ($opt_proxy)
       {
@@ -1598,7 +1609,7 @@ sub printVersion()
 
 #=============================================================================#
 
-$version = '4.0.2';
+$version = '4.0.3';
 
 #-----------------------------------------------------------------------------#
 

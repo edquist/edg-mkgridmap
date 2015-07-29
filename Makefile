@@ -1,5 +1,5 @@
 PACKAGE = edg-mkgridmap
-VERSION = 4.0.2
+VERSION = 4.0.3
 TMP_DIR = $(PACKAGE)-$(VERSION)
 TARBALL = $(PACKAGE)-$(VERSION).tar.gz
 
