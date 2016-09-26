@@ -1,13 +1,13 @@
 Name:		edg-mkgridmap
-Version:	4.0.3
+Version:	4.0.4
 Release:	1%{?dist}
 Summary:	A tool to build the grid map-file from VO servers
 Group:		Applications/Internet
 License:	ASL 2.0
 Url:		http://svnweb.cern.ch/world/wsvn/curios/edg-mkgridmap
 
-# svn export http://svn.cern.ch/guest/curios/edg-mkgridmap/tags/v4_0_3 edg-mkgridmap-4.0.3
-# tar czf edg-mkgridmap-4.0.3.tar.gz edg-mkgridmap-4.0.3
+# svn export http://svn.cern.ch/guest/curios/edg-mkgridmap/tags/v4_0_4 edg-mkgridmap-4.0.4
+# tar czf edg-mkgridmap-4.0.4.tar.gz edg-mkgridmap-4.0.4
 Source0:	%{name}-%{version}.tar.gz
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -51,6 +51,9 @@ rm -rf %{buildroot}
 %{_mandir}/man8/edg-mkgridmap.8*
 
 %changelog
+* Mon Sep 26 2016 <Maarten.Litmaath@cern.ch> - 4.0.4-1
+- Fixed omission that caused fatal errors on CentOS 7 but not on SL6.
+
 * Wed Jul 29 2015 <Maarten.Litmaath@cern.ch> - 4.0.3-1
 - Mainly adaptations to changes in underlying libraries on CentOS/EL7.
 
