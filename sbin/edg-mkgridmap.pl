@@ -653,6 +653,11 @@ sub getSubject::voms($)
                     'Cache-Control' => 'no-cache',
                     'Pragma'        => 'no-cache');
 
+    if (defined $io_socket_ssl_version)
+      {
+	$IO::Socket::SSL::VERSION = $io_socket_ssl_version;
+      }
+
     unless ($res->is_success)
       {
 	$error_mesg = "voms search($uri): ".(split(/\n/, $res->message))[0];
